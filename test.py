@@ -1,12 +1,16 @@
-
-from openai import OpenAI
+from groq import Groq
+from dotenv import load_dotenv
 import os
 
-client = OpenAI(api_key=os.getenv("API_KEY"))
+load_dotenv()  # 👈 loads .env file
 
-response = client.responses.create(
-    model="gpt-4.1-mini",
-    input="Hello, reply with one sentence."
+client = Groq(api_key=os.getenv("GROQ_API_KEY"))
+
+response = client.chat.completions.create(
+    model="llama-3.1-8b-instant",
+    messages=[
+        {"role": "user", "content": "Hello, reply with one sentence."}
+    ]
 )
 
-print(response.output_text)
+print(response.choices[0].message.content)
